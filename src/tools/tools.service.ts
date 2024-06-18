@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CreateToolDto } from './dto/create-tool.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { async } from 'rxjs';
 
 @Injectable()
 export class ToolsService {
@@ -11,31 +12,26 @@ export class ToolsService {
   }
 
   async findAll(tag?: string) {
-    const tools = await this.prismaService.tool.findMany();
+    const allTools = await this.prismaService.tool.findMany();
 
-    if (tag) {
-      const toolsWithFilterTag = tools.filter((tool) =>
-        tool.tags.includes(tag),
-      );
+    if (tag)
+      return await this.prismaService.tool.findMany({
+        where: { tags: { has: tag } },
+      });
 
-      return toolsWithFilterTag;
-    }
-
-    return tools;
+    return allTools;
   }
 
   async findById(id: number) {
-    const toolById = await this.prismaService.tool.findUnique({
+    return await this.prismaService.tool.findUnique({
       where: { id },
     });
-
-    if (!toolById) throw new Error('Ferramenta informada não existe!');
-
-    return toolById;
   }
 
   async remove(id: number) {
-    await this.findById(id);
+    const toolById = await this.findById(id);
+
+    if (!toolById) throw new Error('A ferramenta informada não existe!');
 
     return await this.prismaService.tool.delete({ where: { id } });
   }

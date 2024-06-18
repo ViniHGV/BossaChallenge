@@ -42,11 +42,10 @@ export class ToolsController {
   @Delete(':id')
   async remove(@Res() response: Response, @Param('id') id: string) {
     try {
-      return response
-        .status(200)
-        .send(await this.toolsService.remove(parseInt(id)));
+      const res = await this.toolsService.remove(parseInt(id));
+      return response.status(200).send(res);
     } catch (e) {
-      return response.status(404).send();
+      return response.status(404).send(e);
     }
   }
 }
