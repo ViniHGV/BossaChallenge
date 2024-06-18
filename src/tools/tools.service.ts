@@ -1,7 +1,6 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateToolDto } from './dto/create-tool.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { async } from 'rxjs';
 
 @Injectable()
 export class ToolsService {
@@ -31,7 +30,8 @@ export class ToolsService {
   async remove(id: number) {
     const toolById = await this.findById(id);
 
-    if (!toolById) throw new Error('A ferramenta informada não existe!');
+    if (!toolById)
+      throw new NotFoundException('A ferramenta informada não existe!');
 
     return await this.prismaService.tool.delete({ where: { id } });
   }
