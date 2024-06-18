@@ -8,6 +8,10 @@ import { hash } from 'bcrypt';
 export class UsersService {
   constructor(private readonly prismaService: PrismaService) {}
 
+  async findByEmail(email: string) {
+    return await this.prismaService.user.findUnique({ where: { email } });
+  }
+
   async create(createUserDto: CreateUserDto) {
     let { email, password } = createUserDto;
     const userByEmail = await this.prismaService.user.findUnique({
