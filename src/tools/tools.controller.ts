@@ -3,20 +3,21 @@ import {
   Get,
   Post,
   Body,
-  Patch,
   Param,
   Delete,
   Query,
   Res,
-  Optional,
+  UseGuards,
 } from '@nestjs/common';
 import { ToolsService } from './tools.service';
 import { CreateToolDto } from './dto/create-tool.dto';
 import { ApiProperty, ApiTags } from '@nestjs/swagger';
 import { Response } from 'express';
+import { AuthGuard } from 'src/auth/auth.guard';
 
 @ApiTags('Tool')
 @Controller('tools')
+@UseGuards(AuthGuard)
 export class ToolsController {
   constructor(private readonly toolsService: ToolsService) {}
 
@@ -45,7 +46,7 @@ export class ToolsController {
       const res = await this.toolsService.remove(parseInt(id));
       return response.status(200).send(res);
     } catch (e) {
-      return response.status(404).send(e);
+      return response.status(e.status).send({ message: e.message });
     }
   }
 }
