@@ -1,73 +1,272 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# VUTTR (Very Useful Tools to Remember) API 🛠
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+Esta é a API para a aplicação VUTTR, um simples repositório para gerenciar ferramentas com seus respectivos nomes, links, descrições e tags. A API foi construída utilizando NestJS, PrismaORM, JWT para verificação e autenticação, Swagger para documentação, Docker para containerização da API e do banco de dados PostgreSQL.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Tecnologias Utilizadas
 
-## Description
+- **NestJS**: Framework para construção de aplicações Node.js escaláveis.
+- **PrismaORM**: ORM para interação com o banco de dados.
+- **JWT (JSON Web Tokens)**: Para autenticação e autorização.
+- **Swagger**: Para documentação da API.
+- **Docker**: Para containerização da API e do PostgreSQL.
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## Funcionalidades
 
-## Installation
+A API oferece as seguintes funcionalidades:
 
-```bash
-$ npm install
+1. **Listar todas as ferramentas**: `GET /tools`
+2. **Filtrar ferramentas por tag**: `GET /tools?tag=node`
+3. **Cadastrar uma nova ferramenta**: `POST /tools`
+4. **Remover uma ferramenta por ID**: `DELETE /tools/:id`
+5. **Cadastrar novo usuário**: `POST: /users`
+6. **Listar usuários cadastrados**: `GET: /users`
+7. **Atualizar usuário**: `PUT: /users`
+8. **Obter único usuário**: `GET: /users/:id`
+
+## Gestão de ferramentas 🛠
+
+### 1: Listar todas as ferramentas cadastradas
+
+**Endpoint:** `GET /tools`
+
+**Resposta:**
+
+```json
+[
+    {
+        "id": 1,
+        "title": "Notion",
+        "link": "https://notion.so",
+        "description": "All in one tool to organize teams and ideas. Write, plan, collaborate, and get organized.",
+        "tags": ["organization", "planning", "collaboration", "writing", "calendar"]
+    },
+    {
+        "id": 2,
+        "title": "json-server",
+        "link": "https://github.com/typicode/json-server",
+        "description": "Fake REST API based on a json schema. Useful for mocking and creating APIs for front-end devs to consume in coding challenges.",
+        "tags": ["api", "json", "schema", "node", "github", "rest"]
+    },
+    {
+        "id": 3,
+        "title": "fastify",
+        "link": "https://www.fastify.io/",
+        "description": "Extremely fast and simple, low-overhead web framework for NodeJS. Supports HTTP2.",
+        "tags": ["web", "framework", "node", "http2", "https", "localhost"]
+    }
+]
 ```
 
-## Running the app
 
-```bash
-# development
-$ npm run start
 
-# watch mode
-$ npm run start:dev
 
-# production mode
-$ npm run start:prod
+
+
+### 2: Filtrar ferramentas utilizando uma busca por tag
+**Endpoint:** `GET /tools?tag=node`
+
+Resposta:
+
+```json 
+[
+    {
+        "id": 2,
+        "title": "json-server",
+        "link": "https://github.com/typicode/json-server",
+        "description": "Fake REST API based on a json schema. Useful for mocking e criando APIs para front-end devs to consume in coding challenges.",
+        "tags": ["api", "json", "schema", "node", "github", "rest"]
+    },
+    {
+        "id": 3,
+        "title": "fastify",
+        "link": "https://www.fastify.io/",
+        "description": "Extremely fast and simple, low-overhead web framework for NodeJS. Supports HTTP2.",
+        "tags": ["web", "framework", "node", "http2", "https", "localhost"]
+    }
+]
 ```
 
-## Test
+### 3: Cadastrar uma nova ferramenta
+**Endpoint:** `POST /tools`
 
-```bash
-# unit tests
-$ npm run test
+`Cabeçalho: Content-Type: application/json`
 
-# e2e tests
-$ npm run test:e2e
+Corpo da Requisição:
 
-# test coverage
-$ npm run test:cov
+```json
+{
+    "title": "hotel",
+    "link": "https://github.com/typicode/hotel",
+    "description": "Local app manager. Start apps within your browser, developer tool with local .localhost domain and https out of the box.",
+    "tags": ["node", "organizing", "webapps", "domain", "developer", "https", "proxy"]
+}
+```
+### Resposta:
+
+```json
+{
+    "id": 5,
+    "title": "hotel",
+    "link": "https://github.com/typicode/hotel",
+    "description": "Local app manager. Start apps within your browser, developer tool with local .localhost domain and https out of the box.",
+    "tags": ["node", "organizing", "webapps", "domain", "developer", "https", "proxy"]
+}
 ```
 
-## Support
+### 4: Remover uma ferramenta por ID
+**Endpoint:** `DELETE /tools/:id`
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+#### Resposta:
 
-## Stay in touch
+```json
+{}
+```
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
 
-## License
+## Gestão de usuários 👪
+#### Endpoints:
 
-Nest is [MIT licensed](LICENSE).
+### 5: Criar Usuário
+**Endpoint**: `POST /users`
+
+**Cabeçalho:**  `Content-Type: application/json`
+
+**Corpo da Requisição:**
+
+```json
+{
+    "name": "ViniHGV",
+    "email": "vinihgv@gmail.com",
+    "password": "password12"
+}
+```
+
+#### Resposta:
+
+```json
+{
+    "id": "generated_user_id",
+    "name": "ViniHGV",
+    "email": "vinihgv@gmail.com",
+    "password": "password12"
+}
+```
+
+
+### 6: Autenticar Usuário
+**Endpoint:** `POST /users/auth`
+
+**Cabeçalho:** `Content-Type: application/json`
+
+**Corpo da Requisição:**
+
+```json
+{
+    "email": "vinihgv@gmail.com",
+    "password": "password12"
+}
+```
+
+#### Resposta:
+
+```json
+{
+    "access_token": "jwt_token"
+}
+```
+
+### 7: Listar Usuários
+**Endpoint:**  `GET /users`
+
+#### Resposta:
+
+```json
+[
+    {
+        "id": "generated_user_id",
+        "name": "ViniHGV",
+        "email": "vinihgv@gmail.com"
+    }
+]
+```
+
+### 8: Buscar Usuário por ID
+**Endpoint:** `GET /users/:id`
+
+**Parâmetro:** `ID do usuário a ser buscado (string) no formato UUID`
+
+#### Resposta:
+
+```json
+{
+    "id": "generated_user_id",
+    "name": "ViniHGV",
+    "email": "vinihgv@gmail.com"
+}
+```
+
+### 9: Atualizar Usuário por ID
+**Endpoint:**  `PUT /users/:id`
+
+**Parâmetro:** `ID do usuário a ser buscado (string) no formato UUID`
+
+**Cabeçalho:** `Content-Type: application/json`
+
+#### Corpo da Requisição:
+
+```json
+{
+    "name": "ViniHGV",
+    "email": "vinihgv@gmail.com",
+    "password": "password12"
+}
+```
+
+#### Resposta:
+
+```json
+{
+    "id": "generated_user_id",
+    "name": "ViniHGV",
+    "email": "vinihgv@gmail.com",
+    "password": "password12"
+}
+```
+
+### 10: Remover Usuário por ID
+**Endpoint:** `DELETE /users/:id`
+
+**Parâmetro:** `ID do usuário a ser buscado (string) no formato UUID`
+
+#### Resposta:
+```json
+{}
+```
+
+
+### Documentação da API 📄
+- **A documentação da API foi gerada utilizando o Swagger e pode ser acessada através da rota**  `/api`
+
+Executando o Projeto
+- Pré-requisitos
+- Docker instalado.
+- Node instalado
+- Clone o repositório:
+
+```bash
+git clone https://github.com/ViniHGV/BossaChallenge
+cd BossaChallenge
+```
+
+Instalação de depêndencias: 
+```bash
+npm install @nestjs/cli
+npm install
+```
+
+Suba os containers Docker:
+```bash
+docker-compose up -d --build
+```
+
+Desenvolvido por [ViniHGV](https://github.com/ViniHGV)
