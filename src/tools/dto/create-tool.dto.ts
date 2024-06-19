@@ -24,7 +24,7 @@ export class CreateToolDto {
   description: string;
 
   @ApiProperty({
-    example: '[node, java, c#]',
+    example: ["node", "java", "c#"],
     required: true,
   })
   @IsNotEmpty()

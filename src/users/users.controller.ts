@@ -13,7 +13,7 @@ import {
 } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { Response } from 'express';
 import { UsersService } from './users.service';
 import { AuthService } from 'src/auth/auth.service';
@@ -48,12 +48,15 @@ export class UsersController {
     }
   }
 
+  @ApiBearerAuth('defaultBearerAuth')
   @UseGuards(AuthGuard)
   @Get()
   async findAll() {
     return await this.usersService.findAll();
   }
 
+  @ApiBearerAuth('defaultBearerAuth')
+  @UseGuards(AuthGuard)
   @Get(':id')
   async findOne(@Res() res: Response, @Param('id') id: string) {
     try {
@@ -63,6 +66,7 @@ export class UsersController {
     }
   }
 
+  @ApiBearerAuth('defaultBearerAuth')
   @UseGuards(AuthGuard)
   @Put(':id')
   async update(
@@ -79,6 +83,7 @@ export class UsersController {
     }
   }
 
+  @ApiBearerAuth('defaultBearerAuth')
   @UseGuards(AuthGuard)
   @Delete(':id')
   async remove(@Res() res: Response, @Param('id') id: string) {

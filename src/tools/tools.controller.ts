@@ -11,11 +11,12 @@ import {
 } from '@nestjs/common';
 import { ToolsService } from './tools.service';
 import { CreateToolDto } from './dto/create-tool.dto';
-import { ApiProperty, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth,  ApiTags, ApiQuery } from '@nestjs/swagger';
 import { Response } from 'express';
 import { AuthGuard } from 'src/auth/auth.guard';
 
 @ApiTags('Tool')
+@ApiBearerAuth('defaultBearerAuth')
 @Controller('tools')
 @UseGuards(AuthGuard)
 export class ToolsController {
@@ -34,7 +35,7 @@ export class ToolsController {
     }
   }
 
-  @ApiProperty({ required: false })
+  @ApiQuery({name: "tag", required:false})
   @Get()
   async findAll(@Query('tag') tag?: string) {
     return await this.toolsService.findAll(tag);
