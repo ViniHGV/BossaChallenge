@@ -258,7 +258,7 @@ git clone https://github.com/ViniHGV/BossaChallenge
 cd BossaChallenge
 ```
 
-Instalação de depêndencias: 
+Instalação de dependências: 
 ```bash
 npm install @nestjs/cli
 npm install
