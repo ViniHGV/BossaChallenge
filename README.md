@@ -254,7 +254,7 @@ Executando o Projeto
 - Clone o repositório:
 
 ```bash
-git clone https://github.com/ViniHGV/BossaChallenge
+git clone https://github.com/ViniHGV/BossaChallenge.git
 cd BossaChallenge
 ```
 
